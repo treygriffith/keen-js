@@ -1480,7 +1480,7 @@ var Keen = Keen || {};
      * @param element the HTML element in which to put the visualization
      * @param response an optional param to pass the results of a Query directly into a visualization
      */
-    Keen.PieChart.prototype.draw = function(element, response){
+    Keen.PieChart.prototype.draw = function(element, response, callback){
 
         element.innerHTML = "";
 
@@ -1534,10 +1534,14 @@ var Keen = Keen || {};
                 var chart = new google.visualization.PieChart(element);
                 clearInterval(framerate);
                 chart.draw(dataTable, convertOptions(this.options));
+                if (callback) {
+                  callback();
+                }
             }
             else{
                 console.log("Charting is not yet ready.  Are you waiting for onChartsReady?");
             }
+
 
         }, this);
 
@@ -1589,7 +1593,6 @@ var Keen = Keen || {};
         element.style.height = (this.options.height + "px");
         element.style.display = "block";
         var framerate = Keen.showLoading(element);
-
         var convertOptions = function(opts){
             var options = {};
             options.legend = {};
@@ -2018,15 +2021,18 @@ var Keen = Keen || {};
      *
      * @param element the html element in which to draw the visualization
      * @param options options to pass into the draw method to customize the visualization
+     * if options.useBarChart === true
+     * var barChart = new Keen.BarChart(this, visualizationOptions)
+     * barChart.draw(element);
      */
-    Keen.Metric.prototype.draw = function(element, options){
+    Keen.Metric.prototype.draw = function(element, visualizationOptions, options, callback){
         if(_.isUndefined(this.attributes.groupBy)){
-            var number = new Keen.Number(this, options);
-            number.draw(element);
+            var number = new Keen.Number(this, visualizationOptions );
+            number.draw(element, undefined, callback);
         }
         else{
-            var pieChart = new Keen.PieChart(this, options);
-            pieChart.draw(element);
+            var pieChart = new Keen.PieChart(this, visualizationOptions);
+            pieChart.draw(element, undefined, callback);
         }
     };
 
