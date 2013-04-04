@@ -43,11 +43,15 @@ KeenSpecHelper = function() {
 
   };
 
-  this.waitForChart = function(metricFunc) {
+  this.cleanUp = function(id) {
+    $(id).remove();
+  };
 
-    var canvas = document.createElement("div");
-    canvas.setAttribute("id", "metric");
-    document.body.appendChild(canvas);
+  this.waitForChart = function(metricFunc, drawOptions) {
+    
+    $("<div>", {
+      id: "metric"
+    }).appendTo(document.body);
 
     this.respondWith(200, JSON.stringify(this.fakeData));
 
@@ -58,9 +62,9 @@ KeenSpecHelper = function() {
 
     Keen.onChartsReady((function() {
       var metric = metricFunc();
-      metric.draw(canvas, {
+      metric.draw($("#metric")[0], {
         title: "testTitle"
-      }, {}, function(){
+      }, drawOptions, function(){
         chartsLoaded = true;
       }); 
 
@@ -70,3 +74,4 @@ KeenSpecHelper = function() {
   };
 
 }
+
