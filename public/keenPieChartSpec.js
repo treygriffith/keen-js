@@ -1,5 +1,13 @@
 describe("Pie Charts", function() {
 
+  beforeEach(function() {
+    jasmine.util.extend(this, new KeenSpecHelper());
+  });
+
+  afterEach(function() {
+    this.cleanUp($("#pieChart"));
+  });
+
   function assertSvg() {
     expect($('#pieChart')).toBeVisible();
     expect($("svg g:eq(1) g text:eq(0)").text()).toBe("664");
@@ -31,13 +39,11 @@ describe("Pie Charts", function() {
 
   describe("Keen.PieChart", function() {
     it("should draw a google chart and invoke the callback", function() {
-      var canvas = document.createElement("div")
-      canvas.setAttribute("id", "pieChart");
-      canvas.setAttribute("style", "width: 100px;");
-      document.body.appendChild(canvas);
-      
-      var chartsLoaded, callbackCalled;
+      $('<div>', {
+        id: 'pieChart'
+      }).appendTo(document.body);
 
+      var chartsLoaded, callbackCalled;
       waitsFor(function() {
         return chartsLoaded;
       }, "Chart never loaded", 2000);
@@ -52,7 +58,7 @@ describe("Pie Charts", function() {
           title: "testChart"
         };
         var newChart = new Keen.PieChart(query, options);
-        newChart.draw(canvas, fakeData, function() {
+        newChart.draw($("#pieChart")[0], fakeData, function() {
           callbackCalled = true;
         });
 
@@ -66,13 +72,11 @@ describe("Pie Charts", function() {
     });
     
     it("should not require a callback", function() {
-      var canvas = document.createElement("div")
-      canvas.setAttribute("id", "pieChart");
-      canvas.setAttribute("style", "width: 100px;");
-      document.body.appendChild(canvas);
+      $("<div>", {
+        id: "pieChart"
+      }).appendTo(document.body);
       
       var chartsLoaded;
-
       waitsFor(function() {
         return chartsLoaded;
       }, "Chart never loaded", 2000);
@@ -88,7 +92,7 @@ describe("Pie Charts", function() {
         };
 
         var newChart = new Keen.PieChart(query, options);
-        newChart.draw(canvas, fakeData)
+        newChart.draw($("#pieChart")[0], fakeData)
 
         chartsLoaded = true;
       });

@@ -21,6 +21,7 @@ describe("Keen.Metric.draw", function() {
 
   afterEach(function() {
     this.server.restore();
+    this.cleanUp($("#metric"));
   });
 
   it("should draw a google chart", function() {

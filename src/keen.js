@@ -2025,6 +2025,10 @@ var Keen = Keen || {};
      * var barChart = new Keen.BarChart(this, visualizationOptions)
      * barChart.draw(element);
      */
+     // Keen.Metric.prototype.drawNumber
+    //  Keen.Metric.prototype.drawBarChart 
+    //  // in visiualizationOptions ^ do flipping
+    
     Keen.Metric.prototype.draw = function(element, visualizationOptions, options, callback){
         if(_.isUndefined(this.attributes.groupBy)){
             var number = new Keen.Number(this, visualizationOptions );
