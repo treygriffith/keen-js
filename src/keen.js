@@ -1438,6 +1438,262 @@ var Keen = Keen || {};
     };
 
     /**
+     * Column - A class to display the results of a Metric with a groupBy attribute.
+     *
+     * @param query a query object (either a Keen.Metric or Keen.SavedQuery with a groupBy attribute)
+     * @param options the options used to style the visualization (defaults are provided)
+     */
+    Keen.ColumnChart = Keen.BaseVisualization.extend({
+        constructor : function(query, options) {
+            this.query = query;
+
+            //This contains the supported options and their default values.
+            this.options = {
+                height: 300, //Number of pixels
+                width: 600, //Number of pixels
+                chartAreaHeight: null,
+                chartAreaWidth: null,
+                chartAreaLeft: null,
+                chartAreaTop: null,
+                barWidth: 20, //Number of pixels
+                title: null,
+                showLegend: true,
+                colors: null,
+                backgroundColor: "white",
+                fontColor: "black",
+                xAxisLabel: null,
+                yAxisLabel: null,
+            };
+            this.options = _.extend(this.options, options);
+
+            // If they didn't send a client in the options, default to the Keen global client
+            if(_.isUndefined(this.options.client) ) {
+                this.client = Keen.client;
+            }
+            else {
+                this.client = this.options.client;
+            }
+        }
+    });
+
+    /**
+     * Draws a ColumnChart visualization
+     *
+     * @param element the HTML element in which to put the visualization
+     * @param response an optional param to pass the results of a Query directly into a visualization
+     */
+    Keen.ColumnChart.prototype.draw = function(element, response, callback){
+
+        element.innerHTML = "";
+
+        //Apply the width to the div so that it takes up the correct amount of space from the beginning
+        element.style.width = (this.options.width + "px");
+        element.style.height = (this.options.height + "px");
+        element.style.display = "block";
+        var framerate = Keen.showLoading(element);
+
+        var convertOptions = function(opts){
+            var options = {};
+            options.legend = {};
+            options.height = opts.height;
+            options.width = opts.width;
+            options.title = opts.title;
+            options.colors = opts.colors;
+            options.fontColor = opts.fontColor;
+            options.backgroundColor = opts.backgroundColor;
+            options["hAxis"] = {
+                title: opts.xAxisLabel, 
+                titleTextStyle: {color: opts.xAxisLabelColor}
+            };
+            options["vAxis"] = {
+                title: opts.yAxisLabel, 
+                viewWindow: { min: 0 },
+                titleTextStyle: {color: opts.yAxisLabelColor}  
+            };
+
+            if(!opts.showLegend){
+                options.legend["position"] = "none";
+            }
+            options.titleTextStyle = {color: opts.fontColor};
+            options.legend.textStyle = {color: opts.fontColor};
+            options["chartArea"] = {
+                left: opts.chartAreaLeft,
+                top: opts.chartAreaTop,
+                height: opts.chartAreaHeight,
+                width: opts.chartAreaWidth
+            };
+
+            return options;
+        };
+
+        var drawIt = _.bind(function(response){
+
+            this.data = response.result;
+
+            var dataTable = new google.visualization.DataTable();
+            dataTable.addColumn("string", "Group By");
+            dataTable.addColumn("number", this.getLabel());
+            _.each(this.data, function(item) {
+
+                var name = item[this.query.attributes.groupBy] + "";
+                var value = item.result;
+
+                dataTable.addRow([name, value]);
+
+            }, this);
+
+            if(google){
+                var chart = new google.visualization.ColumnChart(element);
+                clearInterval(framerate);
+                chart.draw(dataTable, convertOptions(this.options));
+                if (callback) {
+                  callback();
+                }
+            }
+            else{
+                console.log("Charting is not yet ready.  Are you waiting for onChartsReady?");
+            }
+
+
+        }, this);
+
+        if(_.isUndefined(response)){
+            this.query.getResponse(drawIt);
+        }
+        else{
+            drawIt(response);
+        }
+    }; 
+
+    /**
+     * BarChart - A class to display the results of a Metric with a groupBy attribute.
+     *
+     * @param query a query object (either a Keen.Metric or Keen.SavedQuery with a groupBy attribute)
+     * @param options the options used to style the visualization (defaults are provided)
+     */
+    Keen.BarChart = Keen.BaseVisualization.extend({
+        constructor : function(query, options) {
+            this.query = query;
+
+            //This contains the supported options and their default values.
+            this.options = {
+                height: 300, //Number of pixels
+                width: 600, //Number of pixels
+                chartAreaHeight: null,
+                chartAreaWidth: null,
+                chartAreaLeft: null,
+                chartAreaTop: null,
+                barWidth: 20, //Number of pixels
+                title: null,
+                showLegend: true,
+                colors: null,
+                backgroundColor: "white",
+                fontColor: "black",
+                xAxisLabel: null,
+                yAxisLabel: null,
+            };
+            this.options = _.extend(this.options, options);
+
+            // If they didn't send a client in the options, default to the Keen global client
+            if(_.isUndefined(this.options.client) ) {
+                this.client = Keen.client;
+            }
+            else {
+                this.client = this.options.client;
+            }
+        }
+    });
+
+    /**
+     * Draws a BarChart visualization
+     *
+     * @param element the HTML element in which to put the visualization
+     * @param response an optional param to pass the results of a Query directly into a visualization
+     */
+    Keen.BarChart.prototype.draw = function(element, response, callback){
+
+        element.innerHTML = "";
+
+        //Apply the width to the div so that it takes up the correct amount of space from the beginning
+        element.style.width = (this.options.width + "px");
+        element.style.height = (this.options.height + "px");
+        element.style.display = "block";
+        var framerate = Keen.showLoading(element);
+
+        var convertOptions = function(opts){
+            var options = {};
+            options.legend = {};
+            options.height = opts.height;
+            options.width = opts.width;
+            options.title = opts.title;
+            options.colors = opts.colors;
+            options.fontColor = opts.fontColor;
+            options.backgroundColor = opts.backgroundColor;
+            options["hAxis"] = {
+                title: opts.xAxisLabel, 
+                titleTextStyle: {color: opts.xAxisLabelColor}
+            };
+            options["vAxis"] = {
+                title: opts.yAxisLabel, 
+                viewWindow: { min: 0 },
+                titleTextStyle: {color: opts.yAxisLabelColor}  
+            };
+
+            if(!opts.showLegend){
+                options.legend["position"] = "none";
+            }
+            options.titleTextStyle = {color: opts.fontColor};
+            options.legend.textStyle = {color: opts.fontColor};
+            options["chartArea"] = {
+                left: opts.chartAreaLeft,
+                top: opts.chartAreaTop,
+                height: opts.chartAreaHeight,
+                width: opts.chartAreaWidth
+            };
+
+            return options;
+        };
+
+        var drawIt = _.bind(function(response){
+
+            this.data = response.result;
+
+            var dataTable = new google.visualization.DataTable();
+            dataTable.addColumn("string", "Group By");
+            dataTable.addColumn("number", this.getLabel());
+            _.each(this.data, function(item) {
+
+                var name = item[this.query.attributes.groupBy] + "";
+                var value = item.result;
+
+                dataTable.addRow([name, value]);
+
+            }, this);
+
+            if(google){
+                var chart = new google.visualization.BarChart(element);
+                clearInterval(framerate);
+                chart.draw(dataTable, convertOptions(this.options));
+                if (callback) {
+                  callback();
+                }
+            }
+            else{
+                console.log("Charting is not yet ready.  Are you waiting for onChartsReady?");
+            }
+
+
+        }, this);
+
+        if(_.isUndefined(response)){
+            this.query.getResponse(drawIt);
+        }
+        else{
+            drawIt(response);
+        }
+    };
+
+    /**
      * PieChart - A class to display the results of a Metric with a groupBy attribute.
      *
      * @param query a query object (either a Keen.Metric or Keen.SavedQuery with a groupBy attribute)

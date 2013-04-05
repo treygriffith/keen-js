@@ -2,31 +2,17 @@ describe("Column Charts", function() {
   beforeEach(function() {
     jasmine.util.extend(this, new KeenSpecHelper());
   });
+
   afterEach(function() {
     this.cleanUp($("#columnChart"));
   });
-  var fakeData = {
-    "result" : [ 
-      {
-        "item.id": 664,
-        "result" : 664
-      },
-      {
-        "item.id": 324,
-        "result" : 324
-      },
-      {
-        "item.id": 440,
-        "result" : 440
-      },
-      {
-        "item.id": 220,
-        "result" : 220
-      }
-    ]
-  };   
+
   describe("Keen.ColumnChart", function() {
     it("should draw a google column chart and invoke the callback", function() {
+      
+      // Make KeenSpecHelper available inside onChartsReady
+      var that = this;
+
       $("<div>", {
         id: "columnChart"
       }).appendTo(document.body)
@@ -45,19 +31,26 @@ describe("Column Charts", function() {
             label: "result"
           }
         };
+        // Make sure all options work
         var options = {
           title: "testChart",
           yAxisLabel: "myStatsBih",
           height: 500,
-          width: 600,
-          backgroundColor: "red",
-          colors: ["green"],
-          fontColor: "orange"
-
+          width: 900,
+          backgroundColor: "gray",
+          colors: ["blue"],
+          fontColor: "pink",
+          xAxisLabel: "timmy",
+          chartAreaLeft: 200,
+          chartAreaWidth: 500,
+          chartAreaHeight: 400,
+          xAxisLabelColor: "red",
+          yAxisLabelColor: "pink"
         };
 
+
         var newChart = new Keen.ColumnChart(query, options);
-        newChart.draw($("#columnChart")[0], fakeData, function() {
+        newChart.draw($("#columnChart")[0], that.fakeData, function() {
           callbackCalled = true;
         });
 
@@ -65,15 +58,18 @@ describe("Column Charts", function() {
       });
 
       runs(function() {
-        var label = "";
-        label += $("svg g:eq(1) g:eq(1) text:first-child").text() 
-        label += " ";
-        label += $("svg g:eq(1) g:eq(1) text:last-child").text()
+        var label = $("svg g:eq(1) g:eq(1) text:first-child").text() 
+        expect(callbackCalled).toBeTruthy();
         expect($("#columnChart")).toExist();
         expect(label).toBe("sum - purchases");
       });
     });
+
     it("should not require a callback", function() {
+
+      // Make KeenSpechelper available inside onChartsReady
+      var that = this;
+
       $("<div>", {
         id: "columnChart"
       }).appendTo(document.body)
@@ -97,7 +93,7 @@ describe("Column Charts", function() {
         };
 
         var newChart = new Keen.ColumnChart(query, options);
-        newChart.draw($("#columnChart")[0], fakeData);
+        newChart.draw($("#columnChart")[0], that.fakeData);
 
         chartsLoaded = true;
       });
