@@ -1590,7 +1590,7 @@ var Keen = Keen || {};
                 backgroundColor: "white",
                 fontColor: "black",
                 xAxisLabel: null,
-                yAxisLabel: null,
+                yAxisLabel: null
             };
             this.options = _.extend(this.options, options);
 
@@ -2281,10 +2281,17 @@ var Keen = Keen || {};
      * var barChart = new Keen.BarChart(this, visualizationOptions)
      * barChart.draw(element);
      */
-     // Keen.Metric.prototype.drawNumber
-    //  Keen.Metric.prototype.drawBarChart 
-    //  // in visiualizationOptions ^ do flipping
-    
+
+    Keen.Metric.prototype.drawBarChart = function(element, visualizationOptions, callback) {
+        if(visualizationOptions.useVerticalBarChart === true) {
+            var columnChart = new Keen.ColumnChart(this, visualizationOptions);
+            columnChart.draw(element, undefined, callback);
+        } else {
+            var barChart = new Keen.BarChart(this, visualizationOptions);
+            barChart.draw(element, undefined, callback);
+        }
+    };   
+
     Keen.Metric.prototype.draw = function(element, visualizationOptions, options, callback){
         if(_.isUndefined(this.attributes.groupBy)){
             var number = new Keen.Number(this, visualizationOptions );

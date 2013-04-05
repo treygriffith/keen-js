@@ -20,6 +20,10 @@ KeenSpecHelper = function() {
       {
         "item.id": 442,
         "result": 442
+      },
+      {
+        "item.id": 500,
+        "result": 500
       }
     ]
   };
@@ -47,7 +51,7 @@ KeenSpecHelper = function() {
     $(id).remove();
   };
 
-  this.waitForChart = function(metricFunc, drawOptions) {
+  this.waitForChart = function(metricFunc) {
     
     $("<div>", {
       id: "metric"
@@ -62,9 +66,22 @@ KeenSpecHelper = function() {
 
     Keen.onChartsReady((function() {
       var metric = metricFunc();
-      metric.draw($("#metric")[0], {
-        title: "testTitle"
-      }, drawOptions, function(){
+      metric.drawBarChart($("#metric")[0], {
+          title: "testChart",
+          yAxisLabel: "myStatsBih",
+          height: 500,
+          width: 900,
+          backgroundColor: "gray",
+          colors: ["blue"],
+          fontColor: "pink",
+          xAxisLabel: "xLabel",
+          chartAreaLeft: 200,
+          chartAreaWidth: 500,
+          chartAreaHeight: 400,
+          xAxisLabelColor: "red",
+          yAxisLabelColor: "pink",
+          useVerticalBarChart: true
+      }, function(){
         chartsLoaded = true;
       }); 
 
