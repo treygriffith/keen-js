@@ -76,7 +76,9 @@
 		// Reference queries for super powers
 		var req = keen.query([min, avg], function(response, meta){
 			console.log('req callback', response, meta);
+			this.draw("#select", { library: 'nvd3', type: 'pie' });
 		});
+		
 		
 		// Add/remove event listeners
 		req.on('complete', reqDone);
