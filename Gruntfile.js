@@ -19,9 +19,10 @@ module.exports = function(grunt) {
           "src/plugins/keen-pageviews.js",
           "src/plugins/keen-async-loading.js",
           "src/query.js", 
-          "src/visualize.js", 
+          "src/visualize.js",
           "src/lib/base64.js",
           "src/lib/json2.js",
+          "src/lib/jquery.documentReady.js", 
           "src/outro.js"
         ],
         dest: "dist/<%= pkg.name %>-<%= pkg.version %>.js"
@@ -52,9 +53,10 @@ module.exports = function(grunt) {
         src: [
           "src/intro.js", 
           "src/query.js", 
-          "src/visualize.js", 
+          "src/visualize.js",
           "src/lib/base64.js",
           "src/lib/json2.js",
+          "src/lib/jquery.documentReady.js", 
           "src/outro.js"
         ],
         dest: "dist/<%= pkg.name %>-<%= pkg.version %>.visualize.js"
