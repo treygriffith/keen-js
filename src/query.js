@@ -143,6 +143,17 @@
     return this;
   };
   
+  Keen.Analysis.prototype.get = function(attribute) {
+    return this.params[attribute] || null;
+  };
+  
+  Keen.Analysis.prototype.set = function(attributes) {
+    for (var attribute in attributes) {
+      this.params[attribute] = attributes[attribute];
+    }
+    return this;
+  };
+  
   
   // -------------------------------
   // Keen.Analysis Types
