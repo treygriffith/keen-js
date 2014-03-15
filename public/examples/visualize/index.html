@@ -8,6 +8,7 @@
 	
   <script type="text/javascript" src="../../dist/keen-3.0.0.visualize.js"></script>
 	<script type="text/javascript" src="../../src/plugins/visualization/keen-nvd3.js"></script>
+	<script type="text/javascript" src="../../src/plugins/visualization/keen-googlecharts.js"></script>
 
   <script type="text/javascript">
 
@@ -35,7 +36,7 @@
 			// if (this.visual) this.visual.trigger("update");
 		});
 		
-		var chart = new Keen.Visualization(widget, '#second', { library: 'nvd3', type: 'line' });
+		var chart = new Keen.Visualization(widget, '#second', { library: 'google', type: 'line' });
 		
 	</script>
 
