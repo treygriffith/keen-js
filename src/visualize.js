@@ -109,7 +109,6 @@
   
   Keen.Adapter.prototype.initialize = function(query, selector, config) {
     console.log('chart:initialize', arguments);
-    return new Keen.Visualization.Libraries['nvd3']['line'](query, selector, config);
   };
   
   Keen.Adapter.prototype.render = function() {
