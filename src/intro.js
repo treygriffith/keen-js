@@ -256,11 +256,6 @@
   _extend(Keen.prototype, Events);
   _extend(Keen, Events);
   
-  
-  Keen.ready = function(callback){
-    Keen.on('ready', callback);
-  }
-  
   // -------------------------------
   // Keen.Plugins
   // -------------------------------

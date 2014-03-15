@@ -25,18 +25,7 @@
       library: 'nvd3', 
       type: 'line' 
     };
-    
     var options = (config) ? _extend(defaults, config) : defaults;
-    
-    query.on("complete", function(){
-      if (this.visual && this.data) {
-        this.visual.trigger("update", this.data);
-      }
-    });
-    
-    query.on("remove", function(){
-      if (this.visual) this.visual.remove();
-    });
     
     if (Keen.Visualization.Libraries[options.library] && Keen.Visualization.Libraries[options.library][options.type]) {
       return new Keen.Visualization.Libraries['nvd3']['line'](query, selector, options);
@@ -89,11 +78,25 @@
   _extend(Keen.Adapter.prototype, Events);
   
   Keen.Adapter.prototype.configure = function(query, selector, config) {
-    this.query = query;
-    this.config = config;
-    this.el = selector.replace("#","");
-    this.initialize.apply(this, arguments);
-    return this;
+    var _this = this;
+    _this.query = query;
+    _this.config = config;
+    _this.selector = selector;
+    
+    Keen.ready(function(){
+      _this.initialize.apply(_this, arguments);
+      
+      _this.query.on("complete", function(){
+        _this.trigger("update");
+      });
+      
+      _this.query.on("remove", function(){
+        _this.trigger("remove");
+      });
+      
+    });
+    
+    return _this;
   };
   
   Keen.Adapter.prototype.initialize = function(query, selector, config) {
@@ -112,3 +115,4 @@
   Keen.Adapter.prototype.remove = function() {
     console.log('chart:remove');
   };
+  

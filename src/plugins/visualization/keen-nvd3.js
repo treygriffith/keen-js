@@ -29,10 +29,13 @@
     Keen.NVD3.LineChart = Keen.Visualization.extend({
       
       initialize: function(){
-        this.on("update", function(data){
-          this.update(data);
-        });
         console.log('nvd3:initialize', this);
+        
+        this.on("update", function(){
+          console.log("triggered to update");
+          this.update();
+        });
+        
         this.render();
       },
       
@@ -42,14 +45,17 @@
       },
       
       render: function(){
-        console.log('nvd3:render', this.el, document);
-        var wrapper = document.getElementById(this.el);
-        wrapper.innerHTML = 'cHaRtZ!';
+        console.log('nvd3:render', this);
+        this.el = d3.select(this.selector).append("div");
+        this.update();
         return this;
       },
       
       update: function(){
         console.log('nvd3:update');
+        if (this.query && this.query.data.meta) {
+          this.el.text(this.selector + ', ' + this.query.data.meta.query.params.event_collection);
+        }
       }
       
       // , remove: function(){}
