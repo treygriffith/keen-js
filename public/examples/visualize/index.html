@@ -25,7 +25,7 @@
 		
 		var count = new Keen.Count('purchase');
 		
-		var widget = keen.query(count, function(response, meta){
+		var widget = keen.query(count, function(response){
 			console.log('callback', response);
 			this.draw("#first", { library: 'nvd3', type: 'line' });
 		});

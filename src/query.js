@@ -30,9 +30,9 @@
   };
   _extend(Keen.Query.prototype, Events);
     
-  Keen.Query.prototype.configure = function(instance, queries, success, error){
+  Keen.Query.prototype.configure = function(instance, analyses, success, error){
     this.instance = instance;
-    this.queries = queries;
+    this.analyses = analyses;
     this.success = success;
     this.error = error;
     
@@ -44,40 +44,34 @@
     
     var self = this,
         completions = 0,
-        response = [],
-        meta = [];
+        response = [];
+        //meta = [];
     
     var handleSuccess = function(res, req){
-      response[req.sequence] = res;
-      meta[req.sequence] = req;
-      meta[req.sequence]['query'] = self.queries[req.sequence];
+      response[req.sequence] = res;      
       
-      // Attach response/meta data to each analysis 
-      req.query.data.response = res;
-      req.query.data.meta = { query: req.query };
-      
-      // Trigger completion event
-      req.query.trigger('complete', req.query.data.response, req.query.data.meta);
+      // Trigger completion event on analysis 
+      self.analyses[req.sequence].trigger('complete', res);
       
       // Increment completion count
       completions++;
       
-      if (completions == self.queries.length) {
+      if (completions == self.analyses.length) {
         
         // Attach response/meta data to query
-        if (self.queries.length == 1) {
-          self.data.response = response[0];
-          self.data.meta = meta[0];
+        if (self.analyses.length == 1) {
+          self.data = response[0];
+          //self.data.meta = meta[0];
         } else {
-          self.data.response = response;
-          self.data.meta = meta;
+          self.data = response;
+          //self.data.meta = meta;
         }
         
         // Trigger completion event on query
-        self.trigger('complete', self.data.response, self.data.meta); 
+        self.trigger('complete', self.data); 
         
         // Fire callback
-        if (self.success) self.success(self.data.response, self.data.meta);
+        if (self.success) self.success(self.data);
       }
        
     };
@@ -88,21 +82,21 @@
       if (self.error) self.error(res, req);
     };
     
-    for (var i = 0; i < this.queries.length; i++) {
+    for (var i = 0; i < this.analyses.length; i++) {
       var url = null;
-      if (this.queries[i] instanceof Keen.Analysis || this.queries[i] instanceof Keen.Funnel) {
-        url = _build_url.apply(this.instance, [this.queries[i].path]);
+      if (this.analyses[i] instanceof Keen.Analysis || this.analyses[i] instanceof Keen.Funnel) {
+        url = _build_url.apply(this.instance, [this.analyses[i].path]);
         url += "?api_key=" + this.instance.client.readKey;
-        url += _build_query_string.apply(this.instance, [this.queries[i].params]);
+        url += _build_query_string.apply(this.instance, [this.analyses[i].params]);
         
-      } else if ( Object.prototype.toString.call(this.queries[i]) === '[object String]' ) {
-        url = _build_url.apply(this.instance, ['/saved_queries/' + encodeURIComponent(this.queries[i]) + '/result']);
+      } else if ( Object.prototype.toString.call(this.analyses[i]) === '[object String]' ) {
+        url = _build_url.apply(this.instance, ['/saved_queries/' + encodeURIComponent(this.analyses[i]) + '/result']);
         url += "?api_key=" + this.instance.client.readKey;
         
       } else {
         var res = {
           statusText: 'Bad Request',
-          responseText: { message: 'Error: Query ' + (i+1) + ' of ' + this.queries.length + ' for project ' + this.instance.client.projectId + ' is not a valid request' }
+          responseText: { message: 'Error: Query ' + (i+1) + ' of ' + this.analyses.length + ' for project ' + this.instance.client.projectId + ' is not a valid request' }
         };
         Keen.log(res.responseText.message);
         Keen.log('Check out our JavaScript SDK Usage Guide for Data Analysis:');

@@ -25,15 +25,23 @@
       library: 'nvd3', 
       type: 'line' 
     };
+    
     var options = (config) ? _extend(defaults, config) : defaults;
     
-    if (Keen.Visualization.Libraries[options.library] && Keen.Visualization.Libraries[options.library][options.type]) {
-      return new Keen.Visualization.Libraries['nvd3']['line'](query, selector, options);
+    if (Keen.Visualization.Libraries[options.library]) {
+      
+      if (Keen.Visualization.Libraries[options.library][options.type]) {
+        
+        return new Keen.Visualization.Libraries[options.library]['line'](query, selector, options);
+        
+      } else {
+        Keen.log('The visualization type you requested is not available for this library');
+      }
     } else {
       Keen.log('The visualization library you requested is not present');
-      return this;
     }
     
+    return this;
   };
     
   Keen.Visualization.Libraries = {};

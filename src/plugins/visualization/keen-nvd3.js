@@ -53,8 +53,10 @@
       
       update: function(){
         console.log('nvd3:update');
-        if (this.query && this.query.data.meta) {
-          this.el.text(this.selector + ', ' + this.query.data.meta.query.params.event_collection);
+        if (this.query) {
+          var collection = this.query.analyses[0].params.event_collection;
+          var result = JSON.stringify(this.query.data);
+          this.el.text(this.selector + ', ' + collection + ': ' + result);
         }
       }
       

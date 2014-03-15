@@ -74,9 +74,8 @@
 		
 		
 		// Reference queries for super powers
-		var req = keen.query([min, avg], function(response, meta){
-			console.log('req callback', response, meta);
-			this.draw("#select", { library: 'nvd3', type: 'pie' });
+		var req = keen.query([min, avg], function(response){
+			console.log('req callback', response);
 		});
 		
 		
@@ -87,8 +86,8 @@
 		req.on('done', function(){ console.log('still here..'); });
 		req.off('complete', reqDone);
 		console.log('req.listeners should only have 1 for \'done\'', req.listeners);
-		function reqDone(response, meta){ 
-			console.log('req listener', response, meta); 
+		function reqDone(response){ 
+			console.log('req listener', response); 
 		};
 		
 		
@@ -103,10 +102,10 @@
 		
 		
 		// Multiple anonymous queries
-		keen.query([count, count_unique, sum, max, min, avg, select_unique, extraction], function(response, meta){
-			console.log('-->', response, meta);
+		keen.query([count, count_unique, sum, max, min, avg, select_unique, extraction], function(response){
+			console.log('-->', response);
 			for (var i = 0; i < response.length; i++){
-				console.log(meta[i].query.path, meta[i].query.params.event_collection, response[i].result);
+				console.log(this.analyses[i].path, this.analyses[i].params.event_collection, this.data[i].result);
 			}
 		});
 		
@@ -162,9 +161,9 @@
 		
 		
 		// Multiple funnels
-		var funtimes = keen.query([funnel, fun2], function(response, meta){
+		var funtimes = keen.query([funnel, fun2], function(response){
 			console.log('---------FUNNEL---------');
-			console.log(response, meta);
+			console.log(response);
 			console.log(response[0].result[0], response[0].result[1], response[0].result[2], response[0].result[3]);
 			console.log(response[1].result[0], response[1].result[1], response[1].result[2], response[1].result[3]);
 			console.log('------------------------');
@@ -173,8 +172,8 @@
 		
 		// Listening is fun
 		var morefun = keen.query([funnel, fun2]);
-		morefun.on('complete', function(res, meta){
-			console.log('morefunnnnel', res, meta);
+		morefun.on('complete', function(res){
+			console.log('morefunnnnel', res);
 		});
 		
 		
