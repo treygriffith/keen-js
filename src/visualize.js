@@ -10,7 +10,9 @@
   // -------------------------------
   
   Keen.Query.prototype.draw = function(selector, config) {
-    this.visual = this.visual || new Keen.Visualization(this, selector, config);
+    if (!this.visual || this.visual.config.library !== config.library || this.visual.config.type !== config.type) {
+      this.visual = new Keen.Visualization(this, selector, config);
+    }
     return this;
   };
   
@@ -32,7 +34,7 @@
       
       if (Keen.Visualization.Libraries[options.library][options.type]) {
         
-        return new Keen.Visualization.Libraries[options.library]['line'](query, selector, options);
+        return new Keen.Visualization.Libraries[options.library][options.type](query, selector, options);
         
       } else {
         Keen.log('The visualization type you requested is not available for this library');
@@ -86,11 +88,17 @@
   _extend(Keen.Adapter.prototype, Events);
   
   Keen.Adapter.prototype.configure = function(query, selector, config) {
-    var _this = this;
-    _this.query = query;
-    _this.config = config;
-    _this.selector = selector;
+
+    var defaults = {
+      height: 400,
+      width: 400
+    };
+    this.config = (config) ? _extend(defaults, config) : defaults;
     
+    this.query = query;
+    this.selector = selector;
+    
+    var _this = this;
     Keen.ready(function(){
       _this.initialize.apply(_this, arguments);
       
