@@ -5,6 +5,7 @@
 	
 	<script type="text/javascript" src='https://www.google.com/jsapi?autoload={"modules":[{"name":"visualization","version":"1","packages":["corechart","table"]}]}'></script>
 	
+	<!--<script type="text/javascript" src="../../src/plugins/visualization/lib/underscore.js"></script>-->
 	<script type="text/javascript" src="../../src/plugins/visualization/lib/d3.v3.min.js"></script>
 	<script type="text/javascript" src="../../src/plugins/visualization/lib/nv.d3.min.js"></script>
 	
@@ -28,15 +29,29 @@
 		
 		// Pie Chart
 		
-		var count = new Keen.Count('pageview', {
-			targetProperty: 'page',
-			groupBy: 'page'
+		var count = new Keen.Count('play', {
+			targetProperty: 'remainingTime',
+			groupBy: 'remainingTime'
 		});
 		
-		var widget = keen.query(count, function(response){
+		var pie = keen.query(count, function(response){
 			console.log('callback', response);
-			//this.draw("#first", { library: 'nvd3', type: 'pie' });
-			this.draw("#first", { library: 'google', type: 'pie' });
+			this.draw("#first", {
+				library: 'google', //type: 'pie',
+				title: 'Counting Plays by Time Remaining',
+				is3D: false,
+				pieHole: .35,
+				labels: {
+					"null": "None",
+					"file://localhost/Users/Larimer/dev/keen/sandbox/video.js%20plugin/index.html": "sandbox"
+				},
+				colors: ['#e0440e', '#e6693e', '#ec8f6e', '#f3b49f', '#f6c7b6'],
+				legend: 'none',
+				pieSliceText: 'label',
+				slices: {
+					2: {offset: 0.5}
+				}
+			});
 		});
 		
 		
@@ -65,8 +80,8 @@
 
 </head>
 <body>
-	<div id="first" style="float: left; width: 50%;"></div>
-	<div id="second" style="float: right; width: 50%;"></div>
+	<div id="first" style="float: left; width: 40%;"></div>
+	<div id="second" style="float: right; width: 60%;"></div>
 </body>
 </html>
 

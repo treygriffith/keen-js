@@ -10,7 +10,9 @@
   // -------------------------------
   
   Keen.Query.prototype.draw = function(selector, config) {
-    if (!this.visual || this.visual.config.library !== config.library || this.visual.config.type !== config.type) {
+    if ( _isUndefined(this.visual) || 
+         ((config.library && config.library !== this.visual.config.library) || 
+         (config.type && config.type !== this.visual.config.type)) ) {
       this.visual = new Keen.Visualization(this, selector, config);
     }
     return this;
@@ -22,13 +24,31 @@
   // -------------------------------
   
   Keen.Visualization = function(query, selector, config){
-    
     var defaults = { 
       library: 'nvd3', 
-      type: 'line' 
+      //type: 'line',
+      //capable: []
     };
-    
     var options = (config) ? _extend(defaults, config) : defaults;
+    //console.log(query.analyses);
+    
+    for (var i = 0; i < query.analyses.length; i++) {
+      if (query.analyses[i].params.interval) { // Series
+        options.capable = ['area', 'bar', 'column', 'line', 'table'];
+        if (!options.type) options.type = 'line';
+      } else {
+        if (query.analyses[i].params.group_by) { // Static
+          options.capable = ['pie', 'table'];
+          if (!options.type) options.type = 'pie';
+        } else { // Metric
+          options.capable = ['text'];
+          if (!options.type) options.type = 'text';
+          
+        }
+      }
+    }
+    
+    // if (options.type && this.capable.indexOf(options.type)) -> request is going to work
     
     if (Keen.Visualization.Libraries[options.library]) {
       
@@ -117,6 +137,11 @@
   
   Keen.Adapter.prototype.initialize = function(query, selector, config) {
     console.log('chart:initialize', arguments);
+  };
+  
+  Keen.Adapter.prototype.error = function(query, selector, config) {
+    Keen.log('Error: The chart type you have selected does not support your query');
+    Keen.log('Please try chart type(s): ' + this.config.capable.join(','));
   };
   
   Keen.Adapter.prototype.render = function() {
