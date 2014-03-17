@@ -19,13 +19,108 @@
     
     // Library Namespace
     // ------------------------------
-    Keen.GOOGLECHARTS = Keen.GOOGLECHARTS || {};
+    Keen.GoogleCharts = Keen.GoogleCharts || {};
+    
+    
+    // Area Chart
+    // ------------------------------
+    
+    Keen.GoogleCharts.AreaChart = Keen.Visualization.extend({
+      
+      initialize: function(){
+        this.on("update", function(){
+          console.log("triggered to update");
+          this.render();
+        });
+        google.setOnLoadCallback(this.render());
+      },
+      
+      render: function(){
+        if (google.visualization) {
+          _keen_to_datatable.call(this);
+          this.el = document.getElementById(this.selector.replace("#", ""));
+          this.config.width = this.el.offsetWidth;
+          if (this.data) {
+            var chart = new google.visualization.AreaChart(this.el);
+            chart.draw(this.data, this.config);
+          } else {
+            this.error();
+          }
+        }
+        return this;
+      }
+    });
+    
+    
+    // Bar Chart
+    // ------------------------------
+    
+    Keen.GoogleCharts.BarChart = Keen.Visualization.extend({
+      
+      initialize: function(){
+        this.on("update", function(){
+          console.log("triggered to update");
+          this.render();
+        });
+        google.setOnLoadCallback(this.render());
+      },
+      
+      render: function(){
+        if (google.visualization) {
+          _keen_to_datatable.call(this);
+          this.el = document.getElementById(this.selector.replace("#", ""));
+          this.config.width = this.el.offsetWidth;
+          if (this.data) {
+            var chart = new google.visualization.BarChart(this.el);
+            chart.draw(this.data, { isStacked: true, width: this.el.offsetWidth });
+          } else {
+            this.error();
+          }
+        }
+        return this;
+      }
+    
+    });
+    
+    
+    // Column Chart
+    // ------------------------------
+    
+    Keen.GoogleCharts.ColumnChart = Keen.Visualization.extend({
+      
+      initialize: function(){
+        this.on("update", function(){
+          console.log("triggered to update");
+          this.render();
+        });
+        google.setOnLoadCallback(this.render());
+      },
+      
+      render: function(){
+        if (google.visualization) {
+          _keen_to_datatable.call(this);
+          //var csv = google.visualization.dataTableToCsv(this.data);
+          //console.log(csv);
+          
+          this.el = document.getElementById(this.selector.replace("#", ""));
+          this.config.width = this.el.offsetWidth;
+          if (this.data) {
+            var chart = new google.visualization.ColumnChart(this.el);
+            chart.draw(this.data, { width: this.el.offsetWidth });
+          } else {
+            this.error();
+          }
+        }
+        return this;
+      }
+    
+    });
     
     
     // Line Chart
     // ------------------------------
     
-    Keen.GOOGLECHARTS.LineChart = Keen.Visualization.extend({
+    Keen.GoogleCharts.LineChart = Keen.Visualization.extend({
       
       initialize: function(){
         console.log('googlecharts:initialize', this);
@@ -68,57 +163,7 @@
         this.transform();
         this.render();
       }
-      // , remove: function(){}
-    });
-    
-    
-    // Bar Chart
-    // ------------------------------
-    
-    Keen.GOOGLECHARTS.BarChart = Keen.Visualization.extend({
       
-      initialize: function(){
-        console.log('googlecharts:initialize', this);
-        
-        this.on("update", function(){
-          console.log("triggered to update");
-          this.update();
-        });
-        
-        google.setOnLoadCallback(this.render());
-        return this;
-      },
-      
-      transform: function(input) {
-        console.log('googlecharts:transform', this);
-        return _keen_to_datatable.call(this);
-      },
-      
-      render: function(){
-        console.log('googlecharts:render', this);
-        
-        if (google.visualization) {
-          this.transform();
-          this.el = document.getElementById(this.selector.replace("#", ""));
-          this.config.width = this.el.offsetWidth;
-          
-          if (this.data) {
-            var chart = new google.visualization.BarChart(this.el);
-            chart.draw(this.data, this.config);
-          } else {
-            this.error();
-          }
-        }
-        
-        return this;
-      },
-      
-      update: function(){
-        console.log('googlecharts:update');
-        this.transform();
-        this.render();
-      }
-      // , remove: function(){}
     });
     
     
@@ -126,22 +171,20 @@
     // Pie Chart
     // ------------------------------
     
-    Keen.GOOGLECHARTS.PieChart = Keen.Visualization.extend({
+    Keen.GoogleCharts.PieChart = Keen.Visualization.extend({
       
       initialize: function(){
-        console.log('googlecharts:initialize', this);
-        
         this.on("update", function(){
           console.log("triggered to update");
           this.render();
         });
-        
         google.setOnLoadCallback(this.render());
         return this;
       },
       
       transform: function(input) {
         console.log('googlecharts:transform', this);
+        if (this.query.data.result == void 0) return false;
         var group_by = this.query.analyses[0].params.group_by || false;
         this.data = (!group_by) ? false : (function(context){
           var datatable = [ [ group_by, 'value' ] ];
@@ -162,8 +205,6 @@
       },
       
       render: function(){
-        console.log('googlecharts:render', this);
-        
         if (google.visualization) {
           this.transform();
           this.el = document.getElementById(this.selector.replace("#", ""));
@@ -179,10 +220,42 @@
         
         return this;
       }
-      
-      // , update: function(){}
-      // , remove: function(){}
+    
     });
+    
+    
+    
+    Keen.GoogleCharts.Table = Keen.Visualization.extend({
+      
+      initialize: function(){
+        this.on("update", function(){
+          console.log("triggered to update");
+          this.render();
+        });
+        google.setOnLoadCallback(this.render());
+        return this;
+      },
+      
+      render: function(){
+        if (google.visualization) {
+          _keen_to_datatable.call(this);
+          this.el = document.getElementById(this.selector.replace("#", ""));
+          this.config.width = this.el.offsetWidth;
+          
+          if (this.data) {
+            var chart = new google.visualization.Table(this.el);
+            chart.draw(this.data, this.config);
+          } else {
+            this.error();
+          }
+        }
+        
+        return this;
+      }
+    
+    });
+    
+    
     
     
     // Private methods
@@ -194,7 +267,10 @@
         this.data = false;
         return;
       }
-      if (this.query.data == void 0) return this;
+      if (this.query.data == void 0) {
+        this.data = false;
+        return this;
+      }
       
       //console.log('_keen_to_datatable', this);
       
@@ -274,9 +350,12 @@
     // ------------------------------
     
     Keen.Visualization.register("google", {
-      "line": Keen.GOOGLECHARTS.LineChart,
-      "bar": Keen.GOOGLECHARTS.BarChart,
-      "pie": Keen.GOOGLECHARTS.PieChart
+      "area"  : Keen.GoogleCharts.AreaChart,
+      "bar"   : Keen.GoogleCharts.BarChart,
+      "column": Keen.GoogleCharts.ColumnChart,
+      "line"  : Keen.GoogleCharts.LineChart,
+      "pie"   : Keen.GoogleCharts.PieChart,
+      "table" : Keen.GoogleCharts.Table
     });
     
     return Keen;

@@ -25,9 +25,7 @@
   
   Keen.Visualization = function(query, selector, config){
     var defaults = { 
-      library: 'nvd3', 
-      //type: 'line',
-      //capable: []
+      library: 'google'
     };
     var options = (config) ? _extend(defaults, config) : defaults;
     //console.log(query.analyses);
@@ -35,15 +33,20 @@
     for (var i = 0; i < query.analyses.length; i++) {
       if (query.analyses[i].params.interval) { // Series
         options.capable = ['area', 'bar', 'column', 'line', 'table'];
-        if (!options.type) options.type = 'line';
+        if (_isUndefined(options.type)) {
+          options.type = 'line';
+        }
       } else {
         if (query.analyses[i].params.group_by) { // Static
           options.capable = ['pie', 'table'];
-          if (!options.type) options.type = 'pie';
+          if (_isUndefined(options.type)) {
+            options.type = 'pie';
+          }
         } else { // Metric
           options.capable = ['text'];
-          if (!options.type) options.type = 'text';
-          
+          if (_isUndefined(options.type)) {
+            options.type = 'text';
+          }
         }
       }
     }

@@ -23,28 +23,26 @@
 			requestType: "xhr" // "jsonp" "beacon" 
 		});
 		
-		/*
-				ANALYSIS TYPES
-		*/
 		
 		// Pie Chart
-		
+		// ---------------------------
 		var count = new Keen.Count('play', {
 			targetProperty: 'remainingTime',
 			groupBy: 'remainingTime'
 		});
 		
 		var pie = keen.query(count, function(response){
-			console.log('callback', response);
+			//console.log('callback', response);
 			this.draw("#first", {
-				library: 'google', //type: 'pie',
+				library: 'google', type: 'pie',
 				title: 'Counting Plays by Time Remaining',
-				is3D: false,
-				pieHole: .35,
 				labels: {
 					"null": "None",
 					"file://localhost/Users/Larimer/dev/keen/sandbox/video.js%20plugin/index.html": "sandbox"
 				},
+				
+				is3D: false,
+				pieHole: .35,
 				colors: ['#e0440e', '#e6693e', '#ec8f6e', '#f3b49f', '#f6c7b6'],
 				legend: 'none',
 				pieSliceText: 'label',
@@ -56,25 +54,20 @@
 		
 		
 		// Interval Chart
-		
-		var count_daily = new Keen.Count('pageview', {
-			targetProperty: 'page',
-			groupBy: 'page',
-			timeframe: 'last_month',
-			interval: 'daily'
+		// ---------------------------
+		var count_daily = new Keen.Count('play', {
+			targetProperty: "page",
+			groupBy: "page",
+			timeframe: { "start" : "2014-02-10T19:00Z", "end" : "2014-02-13T19:00Z" },
+			interval: "daily"
 		});
-		
-		var interval = keen.query(count_daily, function(){
-			//this.draw("#first", { library: 'google', type: 'line' });
-		});
-		
+		var interval = keen.query(count_daily);
 		var chart = new Keen.Visualization(interval, '#second', { 
-			library: 'google', 
-			type: 'line', 
-			title: 'Counting Page Views is Fun!',
-			vAxis: { title: "Y" },
-    	hAxis: { title: "X" }
+			library: 'google',
+			type: 'table',
+			title: 'Counting Page Views is Fun!'
 		});
+		
 		
 	</script>
 
