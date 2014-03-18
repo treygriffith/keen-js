@@ -16,8 +16,8 @@
   <script type="text/javascript">
 
 		var keen = new Keen({
-			projectId: "52f2ae5905cd661a7800000a",
-			readKey: "4e4d72e5bf8b69686ed87a5a9671bba7ad829fbd10a1c281ee51b6e9c1ce9548e941e1f336f9de9281a5acc66ca8fdabc9b3c806e390eca01665f6a308a9b03d8b332b3fbd9f3cdfc3b3e16b0da6d84851e53fe20fbbce300801b8a401a6395b9f4ab9c89bff566e9678a74ca6624f9b",
+			projectId: "",
+			readKey: "",
 			protocol: "https",
 			//host: 'analytics.yourdomain.com',
 			requestType: "xhr" // "jsonp" "beacon" 
@@ -26,20 +26,24 @@
 		
 		// Pie Chart
 		// ---------------------------
+		/*
 		var count = new Keen.Count('play', {
 			targetProperty: 'remainingTime',
 			groupBy: 'remainingTime'
 		});
 		
 		var pie = keen.query(count, function(response){
-			//console.log('callback', response);
+			
 			this.draw("#first", {
-				library: 'google', type: 'pie',
+				library: 'google', 
+				type: 'pie',
+				
 				title: 'Counting Plays by Time Remaining',
 				labels: {
 					"null": "None",
 					"file://localhost/Users/Larimer/dev/keen/sandbox/video.js%20plugin/index.html": "sandbox"
 				},
+				height: 400,
 				
 				is3D: false,
 				pieHole: .35,
@@ -50,23 +54,47 @@
 					2: {offset: 0.5}
 				}
 			});
-		});
+			
+		});*/
 		
 		
 		// Interval Chart
 		// ---------------------------
-		var count_daily = new Keen.Count('play', {
+		var count_daily = new Keen.Count('pageView', {
 			targetProperty: "page",
 			groupBy: "page",
-			timeframe: { "start" : "2014-02-10T19:00Z", "end" : "2014-02-13T19:00Z" },
+			timeframe: 'this_10_weeks',
 			interval: "daily"
 		});
-		var interval = keen.query(count_daily);
+		var interval = keen.query(count_daily, function(){
+			this.draw('#second', {
+				library: 'google',
+				type: 'line',
+				isStacked: true,
+				title: 'Simple data',
+				labels: {
+					"": "Direct",
+					"null": "None",
+					"file://localhost/Users/Larimer/Downloads/gist3a84fb3288737047e173-05ee2560c1be278096416081960b98ff0104ea4d/index.html": "downloads",
+					"file://localhost/Users/Larimer/dev/keen/sandbox/video.js%20plugin/index.html": "sandbox"
+				},
+				height: 'auto',
+				height: 600,
+				hAxis: {
+					gridlines: { color: '#f7f7f7', count: 2 }
+				},
+				vAxis: {
+					gridlines: { color: '#d7d7d7' }
+				}
+				
+			}); 
+		});
+		/*
 		var chart = new Keen.Visualization(interval, '#second', { 
 			library: 'google',
-			type: 'table',
+			type: 'bar',
 			title: 'Counting Page Views is Fun!'
-		});
+		});*/
 		
 		
 	</script>

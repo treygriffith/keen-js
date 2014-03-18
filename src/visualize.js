@@ -10,9 +10,7 @@
   // -------------------------------
   
   Keen.Query.prototype.draw = function(selector, config) {
-    if ( _isUndefined(this.visual) || 
-         ((config.library && config.library !== this.visual.config.library) || 
-         (config.type && config.type !== this.visual.config.type)) ) {
+    if (_isUndefined(this.visual) || (config.library !== this.visual.library || config.type !== this.visual.type)) {
       this.visual = new Keen.Visualization(this, selector, config);
     }
     return this;
@@ -111,31 +109,40 @@
   _extend(Keen.Adapter.prototype, Events);
   
   Keen.Adapter.prototype.configure = function(query, selector, config) {
-
-    var defaults = {
-      height: 400,
-      width: 400
-    };
-    this.config = (config) ? _extend(defaults, config) : defaults;
+    var self = this, 
+    defaults = {};
     
-    this.query = query;
-    this.selector = selector;
-    
-    var _this = this;
     Keen.ready(function(){
-      _this.initialize.apply(_this, arguments);
       
-      _this.query.on("complete", function(){
-        _this.trigger("update");
+      self.query = query;
+      
+      // Upgrade to return DOM element for various selectors
+      self.el = document.getElementById(selector.replace("#", ""));
+      
+      self.library = config.library;
+      self.type = config.type;
+      self.capable = config.capable;
+
+      self.options = (config) ? _extend(defaults, config) : defaults;
+      self.options.library = undefined;
+      self.options.type = undefined;
+      self.options.capable = undefined;
+      
+      self.options.width = (config.width) ? config.width : self.el.offsetWidth;
+      
+      self.initialize.apply(self);
+      
+      self.query.on("complete", function(){
+        self.trigger("update");
       });
       
-      _this.query.on("remove", function(){
-        _this.trigger("remove");
+      self.query.on("remove", function(){
+        self.trigger("remove");
       });
       
     });
     
-    return _this;
+    return self;
   };
   
   Keen.Adapter.prototype.initialize = function(query, selector, config) {
