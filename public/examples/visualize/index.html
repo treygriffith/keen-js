@@ -64,12 +64,12 @@
 			targetProperty: "page",
 			groupBy: "page",
 			timeframe: 'this_10_weeks',
-			interval: "daily"
+			interval: "weekly"
 		});
 		var interval = keen.query(count_daily, function(){
 			this.draw('#second', {
 				library: 'google',
-				type: 'line',
+				type: 'bar',
 				isStacked: true,
 				title: 'Simple data',
 				labels: {
@@ -89,6 +89,8 @@
 				
 			}); 
 		});
+		
+		
 		/*
 		var chart = new Keen.Visualization(interval, '#second', { 
 			library: 'google',

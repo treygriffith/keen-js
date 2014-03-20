@@ -247,7 +247,7 @@
         
         if (data.result instanceof Array) {
           // SERIES
-        
+          
           if (analysis instanceof Keen.Extraction) {
             console.log('extraction');
             // https://developers.google.com/chart/interactive/docs/gallery/bubblechart?csw=1
@@ -267,6 +267,7 @@
             datatable[0].push([collection, 'result']);
           }
           
+          //console.log(data.result[0]);
           if (group_by) {
             for (var i = 0; i < data.result[0]['value'].length; i++) {
               datatable[0].push(( _label.call(this, data.result[0]['value'][i][group_by]) || ''));
@@ -275,6 +276,7 @@
           
           // Rows
           for (var i = 0; i < data.result.length; i++){
+            
             datatable.push([]);
             
             if (interval) {
@@ -282,7 +284,15 @@
             }
             
             if (data.result[i]['value'] instanceof Array) {
+              
+              data.result[i]['value'].sort(function (a, b) {
+                  return b.result - a.result;
+                });
+              
               for (var j = 0; j < data.result[i]['value'].length; j++){
+                
+                
+                
                 datatable[i+1].push(data.result[i]['value'][j]['result']);
               }
             } else {
