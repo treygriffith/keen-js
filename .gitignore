@@ -1,4 +1,6 @@
-dist/*
 node_modules
 .DS_Store
-src/bower_components
+src/lib/bower_components
+dist/*
+*.log
+.DS_Store
