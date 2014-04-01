@@ -1,0 +1,23 @@
+{
+  "name": "keen-js",
+  "version": "3.0.0",
+  "homepage": "http://keen.io",
+  "description": "Keen IO JavaScript Library",
+  "main": "dist/keen-3.0.0.min.js",
+  "keywords": [
+    "keen",
+    "keen.io"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "src/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "chartstack": "git@github.com:keenlabs/chartstack.git#~0.0.3"
+  }
+}
