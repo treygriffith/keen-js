@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Chartstack Google Charts Test Page</title>
+        <link href="../css/page_styling.css" rel="stylesheet">
+    </head>
+    <body>
+        <h1>Chartstack Google Charts Test Page</h1>
+        <ul class="menu">
+            <li><a href="../">Go back</a></li>
+        </ul>
+
+        <div>
+        <section>
+            <piechart title="Yay browsers!" width="400px" height="400px" datasource="../api/universal/piechart.json"></piechart>
+        </section>
+
+        <section>
+            <barchart width="600px" height="300px" datasource="../api/universal/barchart.json"></barchart>
+        </section>
+
+        <section>
+            <linechart width="600px" height="300px" datasource="../api/universal/linechart.json"></linechart>
+        </section>
+        </div>
+
+        <script src="https://www.google.com/jsapi"></script>
+        <script src="/dist/keen-3.0.0.visualize.min.js"></script>
+        <script>
+
+        </script>
+    </body>
+</html>

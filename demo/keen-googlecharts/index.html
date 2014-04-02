@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Chartstack Keen<>Google Charts Page</title>
+        <link href="../css/page_styling.css" rel="stylesheet">
+    </head>
+    <body>
+        <h1>Chartstack Keen<>Google Charts Demo Page</h1>
+        <ul class="menu">
+            <li><a href="../">Go back</a></li>
+        </ul>
+
+        <div>
+        <section>
+            <piechart width="300px" height="300px" provider="api.keen.io" datasource="../api/keen/piechart.json"></piechart>
+        </section>
+
+        <section>
+            <barchart width="600px" height="300px" provider="api.keen.io" datasource="../api/keen/barchart.json"></barchart>
+        </section>
+
+        <section>
+            <linechart width="600px" height="300px" provider="api.keen.io" datasource="../api/keen/linechart.json"></linechart>
+        </section>
+
+        <section>
+            <linechart width="600px" height="300px" provider="api.keen.io" datasource="../api/keen/multilinechart.json"></linechart>
+        </section>
+        </div>
+
+        <script src="https://www.google.com/jsapi"></script>
+        <script src="/dist/keen-3.0.0.visualize.min.js"></script>
+        <script>
+
+        </script>
+    </body>
+</html>

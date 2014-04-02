@@ -66,7 +66,8 @@ module.exports = function(grunt) {
           "src/lib/base64.js",
           "src/lib/json2.js",
           "src/lib/jquery.documentReady.js", 
-          "src/outro.js"
+          "src/outro.js",
+          "src/lib/bower_components/chartstack/dist/chartstack.min.js"
         ],
         dest: "dist/<%= pkg.name %>-<%= pkg.version %>.visualize.js"
       },
@@ -101,10 +102,19 @@ module.exports = function(grunt) {
     },
     
     connect: {
-      server: {
+      test: {
         options: {
           base: 'test',
           port: 9999
+        }
+      },
+
+      demo: {
+        options: {
+          port: 9001,
+          base: 'demo',
+          keepalive: true,
+          open: 'http://localhost:9001/index.html'
         }
       }
     },
@@ -125,7 +135,9 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('build', ['concat', 'uglify']);
-  grunt.registerTask('dev', ['build', 'connect', 'watch']);
-  grunt.registerTask('test', ['build', 'connect', 'saucelabs-mocha']);
+  grunt.registerTask('dev', ['build', 'connect:test', 'watch']);
+  grunt.registerTask('test', ['build', 'connect:test', 'saucelabs-mocha']);
+  grunt.registerTask('demo', ['connect:demo']);
   grunt.registerTask('default', ['build']);
+
 };

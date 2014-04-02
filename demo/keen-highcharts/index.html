@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Chartstack Keen<>Highcharts demo page</title>
+        <link href="../css/page_styling.css" rel="stylesheet">
+        <link href="../bower_components/nvd3/nv.d3.min.css" rel="stylesheet">
+    </head>
+    <body>
+        <h1>Chartstack Keen<>Highcharts Demo Page</h1>
+        <ul class="menu">
+            <li><a href="../">Go back</a></li>
+        </ul>
+
+        <div>
+        <section>
+            <piechart width="300px" height="300px" provider="api.keen.io" datasource="../api/keen/piechart.json"></piechart>
+        </section>
+
+        <section>
+            <barchart width="600px" height="300px" provider="api.keen.io" datasource="../api/keen/barchart.json"></barchart>
+        </section>
+
+        <section>
+            <linechart width="600px" height="300px" provider="api.keen.io" datasource="../api/keen/linechart.json"></linechart>
+        </section>
+
+        <section>
+            <linechart width="600px" height="300px" provider="api.keen.io" datasource="../api/keen/multilinechart.json"></linechart>
+        </section>
+        </div>
+
+        <!-- By default highcharts uses jQuery but we use the standalone version. -->
+        <script src="/bower_components/highcharts/adapters/standalone-framework.src.js"></script>
+        <!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>-->
+        <script src="/bower_components/highcharts/highcharts-all.js"></script>
+        <script src="/dist/keen-3.0.0.visualize.min.js"></script>
+    </body>
+</html>
