@@ -30,10 +30,10 @@
         <script src="/bower_components/nvd3/nv.d3.min.js"></script>
         <script src="/dist/keen-3.0.0.visualize.min.js"></script>
         <script>
-            chartstack.ready(function(){
+            Keen.ready(function(){
 
               // NVD3's color options
-              var piechart1 = new chartstack.Chart({
+              var piechart1 = new Keen.Chart({
                 title: 'Yay browsers!',
                 el: document.getElementById('piechart1'),
                 chartType: 'piechart',
@@ -48,7 +48,7 @@
                 colors: ['red', 'yellow', 'blue', 'pink', 'purple', 'orange']
               });
 
-              var barchart = new chartstack.Chart({
+              var barchart = new Keen.Chart({
                 title: 'Expenses',
                 el: document.getElementById('barchart'),
                 chartType: 'barchart',
@@ -61,7 +61,7 @@
                 colors: ['red', 'yellow', 'blue', 'pink', 'purple', 'orange']
               });
 
-              var linechart = new chartstack.Chart({
+              var linechart = new Keen.Chart({
                 title: 'Expenses',
                 el: document.getElementById('linechart'),
                 chartType: 'linechart',

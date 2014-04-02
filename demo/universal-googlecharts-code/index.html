@@ -29,8 +29,8 @@
         <script src="https://www.google.com/jsapi"></script>
         <script src="/dist/keen-3.0.0.visualize.min.js"></script>
         <script>
-            chartstack.ready(function(){
-              var piechart = new chartstack.Chart({
+            Keen.ready(function(){
+              var piechart = new Keen.Chart({
                 title: 'Yay browsers!',
                 el: document.getElementById('piechart'),
                 chartType: 'piechart',
@@ -39,7 +39,7 @@
                 height: '400'
               });
 
-              var barchart = new chartstack.Chart({
+              var barchart = new Keen.Chart({
                 el: document.getElementById('barchart'),
                 chartType: 'barchart',
                 datasource: '../api/universal/barchart.json',
@@ -47,7 +47,7 @@
                 height: '300'
               });
 
-              var linechart = new chartstack.Chart({
+              var linechart = new Keen.Chart({
                 el: document.getElementById('linechart'),
                 chartType: 'linechart',
                 datasource: '../api/universal/linechart.json',

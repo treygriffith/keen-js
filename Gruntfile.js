@@ -32,7 +32,9 @@ module.exports = function(grunt) {
           "src/lib/base64.js",
           "src/lib/json2.js",
           "src/lib/jquery.documentReady.js", 
-          "src/outro.js"
+          "src/outro.js",
+          "src/lib/bower_components/chartstack/dist/chartstack.min.js",
+          "src/chartstack.js"
         ],
         dest: "dist/<%= pkg.name %>-<%= pkg.version %>.js"
       },
@@ -67,7 +69,8 @@ module.exports = function(grunt) {
           "src/lib/json2.js",
           "src/lib/jquery.documentReady.js", 
           "src/outro.js",
-          "src/lib/bower_components/chartstack/dist/chartstack.min.js"
+          "src/lib/bower_components/chartstack/dist/chartstack.min.js",
+          "src/chartstack.js"
         ],
         dest: "dist/<%= pkg.name %>-<%= pkg.version %>.visualize.js"
       },

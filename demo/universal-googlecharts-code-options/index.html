@@ -45,10 +45,10 @@
         <script src="https://www.google.com/jsapi"></script>
         <script src="/dist/keen-3.0.0.visualize.min.js"></script>
         <script>
-            chartstack.ready(function(){
+            Keen.ready(function(){
 
               // Google's Make 3D option.
-              var piechart1 = new chartstack.Chart({
+              var piechart1 = new Keen.Chart({
                 title: 'Yay browsers!',
                 el: document.getElementById('piechart1'),
                 chartType: 'piechart',
@@ -61,7 +61,7 @@
               });
 
               // Google's Pie hole option.
-              var piechart2 = new chartstack.Chart({
+              var piechart2 = new Keen.Chart({
                 title: 'Yay browsers!',
                 el: document.getElementById('piechart2'),
                 chartType: 'piechart',
@@ -74,7 +74,7 @@
               });
 
               // Google's slice offset option.
-              var piechart3 = new chartstack.Chart({
+              var piechart3 = new Keen.Chart({
                 title: 'Yay browsers!',
                 el: document.getElementById('piechart3'),
                 chartType: 'piechart',
@@ -89,7 +89,7 @@
               });
 
               // Google's legend option.
-              var piechart4 = new chartstack.Chart({
+              var piechart4 = new Keen.Chart({
                 title: 'Yay browsers!',
                 el: document.getElementById('piechart4'),
                 chartType: 'piechart',
@@ -108,7 +108,7 @@
               });
 
               // Google's color options
-              var piechart5 = new chartstack.Chart({
+              var piechart5 = new Keen.Chart({
                 title: 'Yay browsers!',
                 el: document.getElementById('piechart5'),
                 chartType: 'piechart',
@@ -123,7 +123,7 @@
                 colors: ['red', 'yellow', 'blue', 'pink', 'purple', 'orange']
               });
 
-              var barchart = new chartstack.Chart({
+              var barchart = new Keen.Chart({
                 title: 'Expenses',
                 el: document.getElementById('barchart'),
                 chartType: 'barchart',
@@ -136,7 +136,7 @@
                 colors: ['red', 'yellow', 'blue', 'pink', 'purple', 'orange']
               });
 
-              var linechart = new chartstack.Chart({
+              var linechart = new Keen.Chart({
                 title: 'Expenses',
                 el: document.getElementById('linechart'),
                 chartType: 'linechart',
